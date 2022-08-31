@@ -6,9 +6,9 @@
  */
 package chapter2.ImageViewer;
 
-import java.awt.*;
-import java.io.*;
 import javax.swing.*;
+import java.awt.*;
+import java.io.File;
 
 public class ImageViewer {
     public static void main(String[] args){
