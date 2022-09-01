@@ -75,9 +75,22 @@ Java中“字母”和“数字”的范围更大
 
 ## 算术运算符
 
-整数被0除将会产生一个异常，而浮点数被0除将会得到无穷大或NaN结果
+整数除以0会产生一个异常，而浮点数除以0会得到无穷大或NaN结果
 
 如果将一个类标记为strictfp，这个类中的所有方法都要使用严格的浮点计算
+
+## 数学函数
+
+Math类的部分方法与值
+
+- Math.sin Math.cos Math.tan Math.atan Math.atan2
+- Math.exp Math.log Math.log10
+- Math.PI Math.E
+- Math.multiplyExact 捕获异常终止程序
+- Math.round 对浮点数进行舍入运算得到最接近整数的结果 返回值long型
+- Math.random 随机返回0 ~ 1之间（包含0不包含1）的浮点数
+
+如果得到一个完全可预测的结果比运行速度更重要的话，使用StrictMath类multiplyExact
 
 ## 强制类型
 
@@ -97,17 +110,117 @@ Java中“字母”和“数字”的范围更大
 
 CharSequence形参可以传入String实参
 
+java.lang.String
+
+- String substring(int beginIndex), String substring(int beginIndex, int endIndex)
+返回一个新字符串。这个字符串包含原始字符串中从beginIndex到字符串末尾或endIndex-1的所有代码单元
+- String join(CharSequence delimiter, CharSequence... elements) 返回一个新字符串，用给定的定界符连接所有元素
+- String repeat(int count) 返回一个字符串，将当前字符串重复count次
+- boolean equals(Object other) 如果字符串与other相等，返回true
+- boolean equalsIgnoreCase(String other) 如果字符串与other相等（忽略大小写），返回true
+- int compareTo(String other) 按照字典顺序，如果字符串位于other之前返回一个负数；如果位于other之后返回一个正数；相等返回0
+- int length() 返回字符串代码单元的个数
+- int codePointCount(int startIndex, int endIndex) 返回startIndex和endIndex-1之间的码点个数
+- char charAt(int index) 返回给定位置的代码单元
+- int codePointAt(int index) 返回从给定位置开始的码点
+- int offsetByCodePoints(int startIndex, int cpCount) 返回从startIndex码点开始，cpCount个码点后的码点索引
+- IntStream codePoints() 将这个字符串的码点作为一个流返回，调用toArray将它们放在一个数组中
+- new String(int[] codePoints, int offset, int count) 用数组中从offset开始的count个码点构造一个字符串
+- boolean empty(), boolean blank() 如果字符串为空或者由空格组成，返回true
+- boolean startsWith(String prefix), boolean endsWith(String suffix) 如果字符串以prefix开头或以suffix结尾，返回true
+- int indexOf(String str), int indexOf(String str, int fromIndex), int indexOf(int cp), int indexOf(int cp, int fromIndex)
+返回与字符串str或码点cp匹配的第一个子串的开始位置。从索引0或fromIndex开始匹配。如果在原始字符串中不存在str，返回-1
+- int lastIndexOf(String str), int lastIndexOf(String str, int fromIndex), int lastIndexOf(int cp), int lastIndexOf(int cp, int fromIndex)
+返回与字符串str或码点cp匹配的最后一个子串的位置。从原始字符末尾或fromIndex开始匹配
+- String replace(CharSequence oldString, CharSequence newString) 
+返回一个新字符串。这个字符串用newString代替原始字符串中的所有的oldString。可以用String或StringBuilder对象作为CharSequence参数
+- String toLowerCase(), String toUpperCase() 返回一个新字符串。这个字符串将原始字符串中的大写字母改为小写，或者将原始字符串中的小写字母改为大写字母
+- String trim(), String strip() 返回一个新字符串。这个字符串将删除原始字符串头部和尾部小于等于U+0020的字符(trim)或空格(strip)
+
+## 构建字符串
+
+StringBuilder类调用StringBuilder方法构建字符串构建器，调用append方法添加内容，构建完成调用toString方法得到String对象
+
+java.lang.StringBuilder
+
+- StringBuilder() 构造一个空的字符串构建器
+- int length() 返回构建器或缓冲器中的代码单元数量
+- StringBuilder append(String str) 追加一个字符串并返回this
+- StringBuilder append(char c) 追加一个代码单元并返回this
+- StringBuilder appendCodePoint(int cp) 追加一个码点，并将其转换为一个或两个代码单元并返回this
+- void setCharAt(int i, char c) 将第i个代码单元设置为c
+- StringBuilder insert(int offset, String str) 在offset位置插入一个字符串并返回this
+- StringBuilder insert(int offset, char c) 在offset位置插入一个代码单元并返回this
+- StringBuilder delete(int startIndex, int endIndex) 删除偏移量从startIndex到endIndex-1的代码单元并返回this
+- String toString() 返回一个与构建器或缓冲器内容相同的字符串
+
+## 输入输出
+
+Console类可以隐式读取输入的一行字符
+
+java.util.Scanner
+
+- Scanner(InputStream in) 用给定的输入流创建一个Scanner对象
+- String nextLine() 读取输入的下一行内容
+- String next() 读取输入的下一个单词（以空格作为分隔符）
+- int nextInt(), double nextDouble() 读取并转换下一个表示整数或浮点数的字符序列
+- boolean hasNext() 检测输入中是否还有其他单词
+- boolean hasNextInt(), boolean hasNextDouble() 检测是否还有下一个表示整数或浮点数的字符序列
+
+java.lang.System
+
+- static Console console() 如果可以进行交互，就返回一个Console对象通过控制台窗口与用户交互，否则返回null
+对于任何一个在控制台窗口启动的程序，都可使用Console对象。否则，是否可用取决于所使用的系统
+
+java.io.Console
+
+- static char[] readPassword(String prompt, Object... args), static String readLine(String prompt, Object... args)
+显示字符串prompt（提示符）并读取用户输入直到输入行结束。args参数可以用来提供个是参数
+
 ## 格式化输出
 
 printf方法参数索引值从1开始
 
 数字和日期的格式化规则是特定于本地化环境的
 
+String.format方法创建格式化字符串而不打印输出
+
+## 文件输入输出
+
+java.util.Scanner
+
+- Scanner(Path p, String encoding) 构造一个使用给定字符编码从给定路经读取数据的Scanner
+- Scanner(String data) 构造一个从给定字符串读取数据的Scanner
+
+java.io.PrintWriter
+
+- PrintWriter(String fileName) 构造一个将数据写入文件的PrintWriter。文件名由参数指定
+
+java.nio.file.Path
+
+- static Path of(String pathName) 根据给定的路经名构造一个Path
+
 # 大数
 
 BigInteger类实现任意精度的整数运算
 
+java.math.BigInteger
+
+- BigInteger add(BigInteger other), BigInteger subtract(BigInteger other), BigInteger multiply(BigInteger other), BigInteger divide(BigInteger other),
+BigInteger mod(BigInteger other) 返回这个大整数和另一个大整数other的和、差、积、商以及余数
+- BigInteger sqrt() 得到这个BigInteger的平方根
+- int compareTo(BigInteger other) 如果这个大整数与另一个大整数other相等，返回0；如果这个大整数小于另一个大整数other，返回负数；否则，返回正数
+- static BigInteger valueOf(long x) 返回值等于x的大整数
+
 BigDecimal类实现任意精度的浮点数运算
+
+java.math.BigDecimal
+
+- BigDecimal add(BigDecimal other), BigDecimal subtract(BigDecimal other), BigDecimal multiply(BigDecimal other), BigDecimal divide(BigDecimal other),
+BigDecimal divide(BigDecimal other, RoundingMode mode) 返回这个大实数和other的和、差、积、商。如果商是个无限循环小数，第一个divide方法会抛出一个异常。要得到一个舍入的结果，
+就要使用第二个方法
+- int compareTo(BigDecimal other) 如果这个大实数与other相等，返回0；如果这个大实数小于other，返回负数；否则，返回正数
+- static BigDecimal valueOf(long x), static BigDecimal valueOf(long x, int scale) 返回值等于x或x/10^scale的一个大实数
 
 静态的valueOF方法可以将普通的数值转换为大数
 
@@ -120,3 +233,15 @@ Java没有提供运算符重载功能
 数字数组元素初始值为0，boolean元素初始值为false，对象数组元素初始值为null
 
 Java中的[]运算符被预定义为会完成越界检查，而且没有指数运算不能通过加1得到下一个元素
+
+java.util.Arrays
+
+- static void fill(xxx[] a, xxx[] v) 将数组的所有数据元素设置为v
+- static void sort(xxx[] a) 使用优化的快速排序算法对数组进行排序
+- static String toString(xxx[] a) 返回包含a中元素的一个字符串，这些元素用中括号包围，并用逗号分隔。在这个方法以及后面的方法，数组元素类型xxx可以是int、long、short、char、byte
+boolean、float或double
+- static xxx[] copyOf(xxx[] a, int end), static xxx[] copyOfRange(xxx[] a, int start, int end)
+返回与a类型相同的一个数组，其长度为length或者end-start，数组元素为a的值。如果end大于a.length，结果会填充0或false的值
+- static boolean equals(xxx[] a, xxx[] b) 如果两个数组大小相同，并且下标相同的元素都对应相等，返回true
+- static int binarySearch(xxx[] a, xxx v), static int binarySearch(xxx[] a, int start, int end, xxx v)
+使用二分查找算法在有序数组a中查找值v。如果找到v，则返回相应的下标；否则，返回一个负数值r。-r-1是v应插入的位置（为保持a有序）
