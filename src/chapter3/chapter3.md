@@ -81,7 +81,7 @@ Java中“字母”和“数字”的范围更大
 
 ## 数学函数
 
-Math类的部分方法与值
+java.lang.Math
 
 - Math.sin Math.cos Math.tan Math.atan Math.atan2
 - Math.exp Math.log Math.log10
