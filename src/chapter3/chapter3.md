@@ -1,17 +1,19 @@
-# 规范
+# chapter3
 
-## 命名规范
+## 规范
+
+### 命名规范
 
 不能使用Java保留字
 类名以大写字母开头遵循骆驼命名法
 
-## Java语言规范
+### Java语言规范
 
 main方法必须声明为public
 
-# 数据类型
+## 数据类型
 
-## 整型
+### 整型
 
 在Java中，所有的数值类型所占据的字节数与平台无关
 并且
@@ -30,7 +32,7 @@ Java没有任何无符号形式的int、long、short或byte类型
 
 可以在数字字面量加下划线
 
-## 浮点类型
+### 浮点类型
 
 | 类型     | 存储需求 | 有效位数 |
 |--------|------|------|
@@ -41,6 +43,8 @@ float类型数值后缀F或f
 
 十六进制表示法中，使用p表示指数，尾数采用十六进制，指数采用十进制
 
+避免浮点数之间的比较
+
 用于表示溢出和出错情况的三个特殊浮点数值：
 
 - 正无穷大 Double.POSITIVE_INFINITY
@@ -49,13 +53,13 @@ float类型数值后缀F或f
 
 Double.isNaN方法判断NaN
 
-## boolean类型
+### boolean类型
 
 整型值和布尔值之间不能进行相互转换
 
-# 量
+## 量
 
-## 变量
+### 变量
 
 Java中“字母”和“数字”的范围更大
 
@@ -63,7 +67,7 @@ Java中“字母”和“数字”的范围更大
 
 对于局部变量，如果可以从变量的初始值推断出它的类型就不再需要声明类型，只需要使用关键字var
 
-## 常量
+### 常量
 
 常量：final 一般常量名使用全大写
 
@@ -71,15 +75,15 @@ Java中“字母”和“数字”的范围更大
 
 如果一个常量被声明为public，那么其他类的方法也可以使用这个常量
 
-# 运算符
+## 运算符
 
-## 算术运算符
+### 算术运算符
 
 整数除以0会产生一个异常，而浮点数除以0会得到无穷大或NaN结果
 
 如果将一个类标记为strictfp，这个类中的所有方法都要使用严格的浮点计算
 
-## 数学函数
+### 数学函数
 
 java.lang.Math
 
@@ -92,17 +96,17 @@ java.lang.Math
 
 如果得到一个完全可预测的结果比运行速度更重要的话，使用StrictMath类multiplyExact
 
-## 强制类型
+### 强制类型
 
 强制类型转换通过截断小数部分将浮点值转换为整数
 
 不要在boolean类型与任何数值类型之间进行强制类型转换
 
-## 自增、自减运算符
+### 自增、自减运算符
 
 不要在表达式中使用++或--
 
-## 字符串
+### 字符串
 
 任何一个Java对象都可以转换成字符串
 
@@ -132,12 +136,12 @@ java.lang.String
 返回与字符串str或码点cp匹配的第一个子串的开始位置。从索引0或fromIndex开始匹配。如果在原始字符串中不存在str，返回-1
 - int lastIndexOf(String str), int lastIndexOf(String str, int fromIndex), int lastIndexOf(int cp), int lastIndexOf(int cp, int fromIndex)
 返回与字符串str或码点cp匹配的最后一个子串的位置。从原始字符末尾或fromIndex开始匹配
-- String replace(CharSequence oldString, CharSequence newString) 
+- String replace(CharSequence oldString, CharSequence newString)
 返回一个新字符串。这个字符串用newString代替原始字符串中的所有的oldString。可以用String或StringBuilder对象作为CharSequence参数
 - String toLowerCase(), String toUpperCase() 返回一个新字符串。这个字符串将原始字符串中的大写字母改为小写，或者将原始字符串中的小写字母改为大写字母
 - String trim(), String strip() 返回一个新字符串。这个字符串将删除原始字符串头部和尾部小于等于U+0020的字符(trim)或空格(strip)
 
-## 构建字符串
+### 构建字符串
 
 StringBuilder类调用StringBuilder方法构建字符串构建器，调用append方法添加内容，构建完成调用toString方法得到String对象
 
@@ -154,7 +158,7 @@ java.lang.StringBuilder
 - StringBuilder delete(int startIndex, int endIndex) 删除偏移量从startIndex到endIndex-1的代码单元并返回this
 - String toString() 返回一个与构建器或缓冲器内容相同的字符串
 
-## 输入输出
+### 输入输出
 
 Console类可以隐式读取输入的一行字符
 
@@ -177,7 +181,7 @@ java.io.Console
 - static char[] readPassword(String prompt, Object... args), static String readLine(String prompt, Object... args)
 显示字符串prompt（提示符）并读取用户输入直到输入行结束。args参数可以用来提供个是参数
 
-## 格式化输出
+### 格式化输出
 
 printf方法参数索引值从1开始
 
@@ -185,7 +189,7 @@ printf方法参数索引值从1开始
 
 String.format方法创建格式化字符串而不打印输出
 
-## 文件输入输出
+### 文件输入输出
 
 java.util.Scanner
 
@@ -200,7 +204,7 @@ java.nio.file.Path
 
 - static Path of(String pathName) 根据给定的路经名构造一个Path
 
-# 大数
+## 大数
 
 BigInteger类实现任意精度的整数运算
 
@@ -228,7 +232,7 @@ BigDecimal divide(BigDecimal other, RoundingMode mode) 返回这个大实数和o
 
 Java没有提供运算符重载功能
 
-# 数组
+## 数组
 
 数字数组元素初始值为0，boolean元素初始值为false，对象数组元素初始值为null
 
