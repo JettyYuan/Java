@@ -248,6 +248,10 @@ java.nio.file.Path
 
 - static Path of(String pathName) 根据给定的路经名构造一个Path
 
+## switch语句
+
+switch的参数可以是整数量，char，String类对象
+
 ## 大数
 
 BigInteger类实现任意精度的整数运算
