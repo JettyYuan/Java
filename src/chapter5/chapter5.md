@@ -47,6 +47,22 @@ final方法不能被子类的方法覆盖
 
 只有基本类型不是对象
 
+每一个类都有**必要**重写Object类的equals方法、hashCode方法和toString方法，子类再重写超类的，尽管可能用不到
+
+java.lang.Object
+
+- Class getClass() 返回包含对象信息的类对象
+- boolean equals(Object otherObject)
+  比较两个对象是否相等，如果两个对象指向同一块存储区域，方法返回true；否则方法返回false，要在自定义的类中覆盖这个方法
+- String toString() 返回表示该对象值的字符串，要在自定义的类中覆盖这个方法
+
+java.lang.Class
+
+- String getName() 返回这个类的名字
+- Class getSuperclass() 以Class对象的形式返回这个类的超类
+
+### equals方法
+
 Object类中的equals方法用于检测一个对象是否等于另外一个对象
 
 getClass方法返回一个对象**所属的类**
@@ -59,7 +75,8 @@ getClass方法返回一个对象**所属的类**
 - 比较this与otherObject的类，如果equals的语义可以在子类中改变使用getClass检测
   如果所有的子类都有相同的相等性语义，使用instanceof检测
 - 将otherObject强制类型转换为this的类并赋值给other
-- 比较，使用==比较基本类型字段；使用Objects.equals比较对象字段
+- 比较，使用==比较基本类型字段；使用Objects.equals比较对象字段；如果在子类中重新定义equals方法，就要包含一个super.equals(
+  other)调用
 
 java.util.Arrays
 
@@ -70,3 +87,36 @@ java.util.Objects
 
 - static boolean equals(Object a, Object b)
   如果a和b都为null，返回true；如果只有其中之一为null，则返回false；否则返回a.equals(b)
+
+### hashCode方法
+
+字符串的散列码(hash code)是由内容导出的，而Object类的默认hashCode方法会从对象的存储地址得出散列码
+
+如果重新定义了equals方法就必须重新定义hashCode方法，两者定义必须相容
+
+java.lang.Object
+
+- int hashCode()
+  返回对象的散列码，散列码可以是任意的整数，包括正数或负数；两个相等的对象要求返回相等的散列码
+
+java.util.Objects
+
+- static int hash(Object... objects) 返回一个散列码，由提供的所有对象的散列码组合而得到
+- static int hashCode(Object a) 如果a为null返回0，否则返回a.hashCode()
+
+java.lang.(Integer|Long|Short|Byte|Double|Float|Character|Boolean)
+
+- static int hashCode(xxx value) 返回给定值的散列码，这里xxx是对应给定包装器类型的基本类型
+
+java.util.Arrays
+
+- static int hashCode(xxx[] a)
+  计算数组a的散列码，组成这个数组的元素类型xxx可以是object、int、long、short、char、byte、boolean、float或double
+
+### toString方法
+
+只要对象与一个字符串通过操作符"+"连接起来，Java编译器就会自动地调用toString方法来获得这个对象的字符串描述
+
+打印数组调用静态方法Arrays.toString，打印多维数组调用Arrays.deepToString方法
+
+为自定义的每一个类添加toString方法
