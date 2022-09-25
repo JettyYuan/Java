@@ -43,7 +43,7 @@ final方法不能被子类的方法覆盖
 - protected 对本包和所有子类可见
 - 无修饰符 对本包可见
 
-## Object
+## Object类
 
 只有基本类型不是对象
 
@@ -120,3 +120,29 @@ java.util.Arrays
 打印数组调用静态方法Arrays.toString，打印多维数组调用Arrays.deepToString方法
 
 为自定义的每一个类添加toString方法
+
+## 泛型数组列表
+
+ArrayList类是一个有类型参数的泛型类，能够**自动**地调整数组容量，再类后面加上<>添加**数组列表**类型
+
+<>结合new操作符使用**菱形语法**，省略类型，编译器会检测泛型类型，这是在对象变量声明了类型的情况，如果是var则不可以这样做，会导致生成的是Object类数组
+
+数组列表在没有创建元素时，是不包含任何元素的，即使完成初始化构造之后
+
+java.util.ArrayList<E>
+
+- ArrayList<E>() 构造一个空数组列表
+- ArrayList<E>(int initialCapacity) 用指定容量构造一个空数组列表
+- boolean add(E obj) 在数组列表的末尾追加一个元素，永远返回true
+- int size() 返回当前存储在数组列表中的元素个数（永远不会大于数组列表的容量）
+- void ensureCapacity(int capacity)
+  确保数组列表在不重新分配内部存储数组的情况下有足够的容量存储给定数量的元素
+- void trimToSize() 将数组列表的存储容量削减到当前大小
+- E set(int index, E obj) 将值obj放置在数组列表的指定索引位置，返回之前的内容
+- E get(int index) 得到指定索引位置存储的值
+- void add(int index, E obj) 后移元素从而将obj插入到指定索引位置
+- E remove(int index) 删除指定索引位置的元素，并将后面的所有元素前移，返回所删除的元素
+
+将一个原始ArrayList赋给一个类型化ArrayList会得到一个警告，但反之不会；强制类型转换也无法避免
+
+可以使用@SupperssWarnings("unchecked")标记接受强制类型转换

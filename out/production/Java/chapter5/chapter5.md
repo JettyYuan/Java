@@ -43,9 +43,23 @@ final方法不能被子类的方法覆盖
 - protected 对本包和所有子类可见
 - 无修饰符 对本包可见
 
-## Object
+## Object类
 
 只有基本类型不是对象
+
+每一个类都有**必要**重写Object类的equals方法、hashCode方法和toString方法，子类再重写超类的，尽管可能用不到
+
+java.lang.Object
+
+- Class getClass() 返回包含对象信息的类对象
+- boolean equals(Object otherObject)
+  比较两个对象是否相等，如果两个对象指向同一块存储区域，方法返回true；否则方法返回false，要在自定义的类中覆盖这个方法
+- String toString() 返回表示该对象值的字符串，要在自定义的类中覆盖这个方法
+
+java.lang.Class
+
+- String getName() 返回这个类的名字
+- Class getSuperclass() 以Class对象的形式返回这个类的超类
 
 ### equals方法
 
@@ -61,7 +75,8 @@ getClass方法返回一个对象**所属的类**
 - 比较this与otherObject的类，如果equals的语义可以在子类中改变使用getClass检测
   如果所有的子类都有相同的相等性语义，使用instanceof检测
 - 将otherObject强制类型转换为this的类并赋值给other
-- 比较，使用==比较基本类型字段；使用Objects.equals比较对象字段；如果在子类中重新定义equals方法，就要包含一个super.equals(other)调用
+- 比较，使用==比较基本类型字段；使用Objects.equals比较对象字段；如果在子类中重新定义equals方法，就要包含一个super.equals(
+  other)调用
 
 java.util.Arrays
 
@@ -75,14 +90,14 @@ java.util.Objects
 
 ### hashCode方法
 
-字符串的散列码是由内容导出的，而Object类的默认hashCode方法会从对象的存储地址得出散列码
+字符串的散列码(hash code)是由内容导出的，而Object类的默认hashCode方法会从对象的存储地址得出散列码
 
 如果重新定义了equals方法就必须重新定义hashCode方法，两者定义必须相容
 
 java.lang.Object
 
 - int hashCode()
-返回对象的散列码，散列码可以是任意的整数，包括正数或负数；两个相等的对象要求返回相等的散列码
+  返回对象的散列码，散列码可以是任意的整数，包括正数或负数；两个相等的对象要求返回相等的散列码
 
 java.util.Objects
 
@@ -96,7 +111,7 @@ java.lang.(Integer|Long|Short|Byte|Double|Float|Character|Boolean)
 java.util.Arrays
 
 - static int hashCode(xxx[] a)
-计算数组a的散列码，组成这个数组的元素类型xxx可以是object、int、long、short、char、byte、boolean、float或double
+  计算数组a的散列码，组成这个数组的元素类型xxx可以是object、int、long、short、char、byte、boolean、float或double
 
 ### toString方法
 
@@ -105,3 +120,25 @@ java.util.Arrays
 打印数组调用静态方法Arrays.toString，打印多维数组调用Arrays.deepToString方法
 
 为自定义的每一个类添加toString方法
+
+## 泛型数组列表
+
+ArrayList类是一个有类型参数的泛型类，能够**自动**地调整数组容量，再类后面加上<>添加**数组列表**类型
+
+<>结合new操作符使用**菱形语法**，省略类型，编译器会检测泛型类型，这是在对象变量声明了类型的情况，如果是var则不可以这样做，会导致生成的是Object类数组
+
+数组列表在没有创建元素时，是不包含任何元素的，即使完成初始化构造之后
+
+java.util.ArrayList<E>
+
+- ArrayList<E>() 构造一个空数组列表
+- ArrayList<E>(int initialCapacity) 用指定容量构造一个空数组列表
+- boolean add(E obj) 在数组列表的末尾追加一个元素，永远返回true
+- int size() 返回当前存储在数组列表中的元素个数（永远不会大于数组列表的容量）
+- void ensureCapacity(int capacity)
+确保数组列表在不重新分配内部存储数组的情况下有足够的容量存储给定数量的元素
+- void trimToSize() 将数组列表的存储容量削减到当前大小
+- E set(int index, E obj) 将值obj放置在数组列表的指定索引位置，返回之前的内容
+- E get(int index) 得到指定索引位置存储的值
+- void add(int index, E obj) 后移元素从而将obj插入到指定索引位置
+- E remove(int index) 删除指定索引位置的元素，并将后面的所有元素前移，返回所删除的元素
