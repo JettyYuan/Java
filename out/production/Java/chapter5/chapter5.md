@@ -70,7 +70,7 @@ getClass方法返回一个对象**所属的类**
 编写一个equals方法：
 
 - 显示参数命名为otherObject，之后转换成other
-- 检测this与otherObject是否相等
+- 使用"=="检测this与otherObject是否引用的是同一个对象
 - 检测otherObject是否为null
 - 比较this与otherObject的类，如果equals的语义可以在子类中改变使用getClass检测
   如果所有的子类都有相同的相等性语义，使用instanceof检测
@@ -136,9 +136,45 @@ java.util.ArrayList<E>
 - boolean add(E obj) 在数组列表的末尾追加一个元素，永远返回true
 - int size() 返回当前存储在数组列表中的元素个数（永远不会大于数组列表的容量）
 - void ensureCapacity(int capacity)
-确保数组列表在不重新分配内部存储数组的情况下有足够的容量存储给定数量的元素
+  确保数组列表在不重新分配内部存储数组的情况下有足够的容量存储给定数量的元素
 - void trimToSize() 将数组列表的存储容量削减到当前大小
 - E set(int index, E obj) 将值obj放置在数组列表的指定索引位置，返回之前的内容
 - E get(int index) 得到指定索引位置存储的值
 - void add(int index, E obj) 后移元素从而将obj插入到指定索引位置
 - E remove(int index) 删除指定索引位置的元素，并将后面的所有元素前移，返回所删除的元素
+
+将一个原始ArrayList赋给一个类型化ArrayList会得到一个警告，但反之不会；强制类型转换也无法避免
+
+可以使用@SupperssWarnings("unchecked")标记接受强制类型转换
+
+## 对象包装器与自动装箱
+
+基本类型在有些情况下需要转换成对象，这是就要使用到包装器类
+
+所有的基本类型都有一个与之对应的类，就是**包装器**；包装器类是**不可变**的，一旦构造了包装器，就不允许更改包装在其中的值
+
+包装器类是final，无法派生它们的子类，ArrayList类的<>内**不允许**是基本类型，这里使用到的是它们的包装器类，但效率极低，特殊情况使用
+
+将基本类型装换成对应的包装器类对象是**自动装箱**；相反，则是自动拆箱
+
+自动装箱**规范**要求boolean、byte、char <= 127，介于-128和127之间的short和int被包装到固定的对象中；如果满足这个规范，包装器类对象就可以使用"=="比较数值
+
+java.lang.Integer
+
+- int intValue() 将这个Integer对象的值作为一个int返回（覆盖Number类中的intValue方法）
+- static String toString(int i) 返回一个新的String对象，表示指定的数值i的十进制表示
+- static String toString(int i, int radix) 返回数值i基于radix参数指定进制的表示
+- static int parseInt(String s) static int parseInt(String s, int radix)
+返回字符串s表示的整数，指定字符串必须表示一个十进制整数（第一种方法），或者采用radix参数指定的进制（第二种方法）
+- static Integer valueOf(String s) static Integer valueOf(String s, int radix)
+返回一个新的Integer对象，用字符串s表示的整数初始化；指定字符串必须表示一个十进制整数（第一种方法），或者采用radix参数指定的进制（第二种方法）
+
+java.text.NumberFormat
+
+- Number parse(String s) 返回数字值，假设给定的String表示一个数值
+
+## “变参”方法
+
+使用省略号...接收任意数量的对象，可变参数**本质**是接收一定数量的参数将它们存放在一个对应类或类型的数组中，并依次使用数组中的元素
+
+## 枚举

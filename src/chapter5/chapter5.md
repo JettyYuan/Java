@@ -45,7 +45,7 @@ final方法不能被子类的方法覆盖
 
 ## Object类
 
-只有基本类型不是对象
+只有基本类型不是对象，所有的数组类型，不管是对象数组还是基本类型的数组都扩展了Object类
 
 每一个类都有**必要**重写Object类的equals方法、hashCode方法和toString方法，子类再重写超类的，尽管可能用不到
 
@@ -70,7 +70,7 @@ getClass方法返回一个对象**所属的类**
 编写一个equals方法：
 
 - 显示参数命名为otherObject，之后转换成other
-- 检测this与otherObject是否相等
+- 使用"=="检测this与otherObject是否引用的是同一个对象
 - 检测otherObject是否为null
 - 比较this与otherObject的类，如果equals的语义可以在子类中改变使用getClass检测
   如果所有的子类都有相同的相等性语义，使用instanceof检测
@@ -146,3 +146,69 @@ java.util.ArrayList<E>
 将一个原始ArrayList赋给一个类型化ArrayList会得到一个警告，但反之不会；强制类型转换也无法避免
 
 可以使用@SupperssWarnings("unchecked")标记接受强制类型转换
+
+## 对象包装器与自动装箱
+
+基本类型在有些情况下需要转换成对象，这是就要使用到包装器类
+
+所有的基本类型都有一个与之对应的类，就是**包装器**；包装器类是**不可变**的，一旦构造了包装器，就不允许更改包装在其中的值
+
+包装器类是final，无法派生它们的子类，ArrayList类的<>内**不允许**是基本类型，这里使用到的是它们的包装器类，但效率极低，特殊情况使用
+
+将基本类型装换成对应的包装器类对象是**自动装箱**；相反，则是自动拆箱
+
+自动装箱**规范**要求boolean、byte、char <=
+127，介于-128和127之间的short和int被包装到固定的对象中；如果满足这个规范，包装器类对象就可以使用"=="比较数值
+
+java.lang.Integer
+
+- int intValue() 将这个Integer对象的值作为一个int返回（覆盖Number类中的intValue方法）
+- static String toString(int i) 返回一个新的String对象，表示指定的数值i的十进制表示
+- static String toString(int i, int radix) 返回数值i基于radix参数指定进制的表示
+- static int parseInt(String s) static int parseInt(String s, int radix)
+  返回字符串s表示的整数，指定字符串必须表示一个十进制整数（第一种方法），或者采用radix参数指定的进制（第二种方法）
+- static Integer valueOf(String s) static Integer valueOf(String s, int radix)
+  返回一个新的Integer对象，用字符串s表示的整数初始化；指定字符串必须表示一个十进制整数（第一种方法），或者采用radix参数指定的进制（第二种方法）
+
+java.text.NumberFormat
+
+- Number parse(String s) 返回数字值，假设给定的String表示一个数值
+
+## “变参”方法
+
+使用省略号...接收任意数量的对象，可变参数**本质**是接收一定数量的参数将它们存放在一个对应类或类型的数组中，并依次使用数组中的元素
+
+## 枚举
+
+在比较两个枚举类型的值时，不需要equals，直接使用"=="即可，枚举的构造器总是私有的
+
+java.lang.Enum<E>
+
+- static Enum valueOf(Class enumClass, String name) 返回给定类中有指定名字的枚举常量
+- String toString() 返回枚举常量名
+- int ordinal() 返回枚举常量在enum声明中的位置，位置从0开始计数
+- int compareTo(E other)
+  如果枚举常量出现在other之前，返回一个负整数；如果this==other，则返回0；否则，返回一个正整数；枚举常量的出现次序在enum声明中给出
+
+## 反射
+
+Object类中的getClass()方法将会返回一个Class类型的实例，Class类实际上是泛型类
+
+两个类对象可以通过Class类利用"=="运算符比较，只有当两者的类是同一个类才是true，子类也不行
+
+java.lang.Class
+
+- static Class forName(String className) 返回一个Class对象，表示名为className的类
+- Constructor getConstructor(Class... parameterTypes) 生成一个对象，描述有指定参数类型的构造器
+- URL getResource(String name) InputStream getResourceAsStream(String name)
+  找到与类位于同一位置的资源，返回一个可以用来加载资源的URL或者输入流；如果没有找到资源，则返回null，所以不会抛出异常或者I/O错误
+
+java.lang.reflect.Constructor
+
+- Object newInstance(Object... params) 将params传递到构造器，来构造这个构造器声明类的一个新实例
+
+java.lang.Throwable
+
+- void printStackTrace() 将Throwable对象和堆栈轨迹打印到标准错误流
+
+如果在一个方法的方法名上增加了一个throws子句，那么调用这个方法的任何方法都需要throws声明，这也包括main方法
