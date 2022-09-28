@@ -215,6 +215,9 @@ java.lang.Class
 - String getPackageName()
   得到包含这个类型的包的包名，如果这个类型是一个数组类型，则返回元素类型所属的包，或如果这个类型是一个基本类型，则返回"
   java.lang"
+- Field getField(String name), Field[] getFields() 得到指定名的公共字段，或所有这些字段的一个数组
+- Field getDeclaredField(String name), Field[] getDeclaredFields()
+  得到类中声明的指定名的字段，或者所有这些字段的一个数组
 
 java.lang.reflect.Constructor
 
@@ -248,3 +251,36 @@ java.lang.reflect.Modifier
   static boolean isPublic(int modifiers), static boolean isStatic(int modifiers),
   static boolean isStrict(int modifiers), static boolean isSynchronized(int modifiers),
   static boolean isVolatile(int modifiers) 这些方法将检测modifiers值中与方法名中修饰符对应的二进制位
+
+反射机制的**默认行为**受限于Java的访问控制
+
+java.lang.reflect.AccessibleObject
+
+- void setAccessible(boolean flag)
+  设置或取消这个可访问对象的可访问标志，如果拒绝访问则抛出一个IllegalAccessException异常
+- void setAccessible(boolean flag), boolean trySetAccessible()
+  为这个可访问的对象设置可访问标志，如果拒绝访问则返回false
+- boolean isAccessible() 得到这个可访问对象的可访问标志值
+- static void setAccessible(AccessibleObject[] array, boolean flag)
+  这是一个便利方法，用于设置一个对象数组的可访问标志
+
+java.lang.reflect.Field
+
+- Object get(Object obj) 返回obj对象中用这个Field对象描述的字段的值
+- void set(Object obj, Object newValue) 将obj对象中这个Field对象描述的字段设置为一个新值
+
+java.lang.reflect.Array
+
+- static Object get(Object array, int index), static xxx getXxx(Object array, int index)
+  （xxx是一种基本类型）这些方法将返回存储在给定数组中给定索引位置上的值
+- static void set(Object array, int index, Object newValue), static setXxx(Object array, int index, xxx newValue)
+  （xxx是一种基本类型）这些方法将一个新值存储到给定数组中的给定位置上
+- static int getLength(Object array) 返回给定数组的长度
+- static Object newInstance(Class componentType, int length), static Object newInstance(Class componentType, int[]
+  lengths)
+  返回一个有给定类型、给定大小的新数组
+
+java.lang.reflect.Method
+
+- public Object invoke(Object implicitParameter, Object explicitParameters)
+  调用这个对象描述的方法，传入给定参数，并返回方法的返回值；对于静态方法，传入null作为隐式参数；使用包装器传递基本类型值；基本类型的返回值必须是未包装的

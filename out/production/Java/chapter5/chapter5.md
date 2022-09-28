@@ -165,9 +165,9 @@ java.lang.Integer
 - int intValue() 将这个Integer对象的值作为一个int返回（覆盖Number类中的intValue方法）
 - static String toString(int i) 返回一个新的String对象，表示指定的数值i的十进制表示
 - static String toString(int i, int radix) 返回数值i基于radix参数指定进制的表示
-- static int parseInt(String s) static int parseInt(String s, int radix)
+- static int parseInt(String s), static int parseInt(String s, int radix)
   返回字符串s表示的整数，指定字符串必须表示一个十进制整数（第一种方法），或者采用radix参数指定的进制（第二种方法）
-- static Integer valueOf(String s) static Integer valueOf(String s, int radix)
+- static Integer valueOf(String s), static Integer valueOf(String s, int radix)
   返回一个新的Integer对象，用字符串s表示的整数初始化；指定字符串必须表示一个十进制整数（第一种方法），或者采用radix参数指定的进制（第二种方法）
 
 java.text.NumberFormat
@@ -202,6 +202,22 @@ java.lang.Class
 - Constructor getConstructor(Class... parameterTypes) 生成一个对象，描述有指定参数类型的构造器
 - URL getResource(String name) InputStream getResourceAsStream(String name)
   找到与类位于同一位置的资源，返回一个可以用来加载资源的URL或者输入流；如果没有找到资源，则返回null，所以不会抛出异常或者I/O错误
+- Field[] getFields(), Field[] getDeclaredFields()
+  getFields方法将返回一个包含Field对象的数组，这些对象对应这个类或其超类的公共字段
+  getDeclaredField方法也返回包含Field对象的数组，这些对象对应这个类的全部字段
+  如果类中没有字段，或者Class对象描述的是基本类型或数组类型，这些方法将返回一个长度为0的数组
+- Method[] getMethod(), Method[] getDeclaredMethods()
+  返回包含Method对象的数组：getMethods将返回所有的公共方法，包括从超类继承来的方法
+  getDeclaredMethods返回这个类或接口的全部方法，但不包括由超类继承的方法
+- Constructor[] getConstructors(), Constructor[] getDeclaredConstructors()
+  返回包含Constructor对象的数组，其中包含Class对象所表示的类的所有公共构造器(getConstructors)或全部构造器(
+  getDeclaredConstructors)
+- String getPackageName()
+  得到包含这个类型的包的包名，如果这个类型是一个数组类型，则返回元素类型所属的包，或如果这个类型是一个基本类型，则返回"
+  java.lang"
+- Field getField(String name), Field[] getFields() 得到指定名的公共字段，或所有这些字段的一个数组
+- Field getDeclaredField(String name), Field[] getDeclaredFields()
+得到类中声明的指定名的字段，或者所有这些字段的一个数组
 
 java.lang.reflect.Constructor
 
@@ -212,3 +228,55 @@ java.lang.Throwable
 - void printStackTrace() 将Throwable对象和堆栈轨迹打印到标准错误流
 
 如果在一个方法的方法名上增加了一个throws子句，那么调用这个方法的任何方法都需要throws声明，这也包括main方法
+
+java.lang.reflect.Field, java.lang.reflect.Method, java.lang.reflect.Constructor
+
+- Class getDeclaringClass() 返回一个Class对象，表示定义了这个构造器、方法或字段的类
+- Class[] getExceptionTypes()（在Constructor和Method classes类中）
+  返回一个Class对象数组，其中各个对象表示这个方法所抛出异常的类型
+- int getModifiers()
+  返回一个整数，描述这个构造器、方法或字段的修饰符；使用Modifier类中的方法来分析这个返回值
+- String getName() 返回一个表示构造器名、方法名或字段名的字符串
+- Class[] getParameterTypes() （在Constructor和Method classes类中）
+  返回一个Class对象数组，其中各个对象表示参数的类型
+- Class getReturnType() （在Method类中）
+  返回一个用于表示返回类型的Class对象
+
+java.lang.reflect.Modifier
+
+- static String toString(int modifiers) 返回一个字符串，包含对应modifiers中位设置的修饰符
+- static boolean isAbstract(int modifiers), static boolean isFinal(int modifiers),
+  static boolean isInterface(int modifiers), static boolean isNative(int modifiers),
+  static boolean isPrivate(int modifiers), static boolean isProtected(int modifiers),
+  static boolean isPublic(int modifiers), static boolean isStatic(int modifiers),
+  static boolean isStrict(int modifiers), static boolean isSynchronized(int modifiers),
+  static boolean isVolatile(int modifiers) 这些方法将检测modifiers值中与方法名中修饰符对应的二进制位
+
+反射机制的**默认行为**受限于Java的访问控制
+
+java.lang.reflect.AccessibleObject
+
+- void setAccessible(boolean flag)
+设置或取消这个可访问对象的可访问标志，如果拒绝访问则抛出一个IllegalAccessException异常
+- void setAccessible(boolean flag), boolean trySetAccessible()
+为这个可访问的对象设置可访问标志，如果拒绝访问则返回false
+- boolean isAccessible() 得到这个可访问对象的可访问标志值
+- static void setAccessible(AccessibleObject[] array, boolean flag)
+这是一个便利方法，用于设置一个对象数组的可访问标志
+
+java.lang.reflect.Field
+
+- Object get(Object obj) 返回obj对象中用这个Field对象描述的字段的值
+- void set(Object obj, Object newValue) 将obj对象中这个Field对象描述的字段设置为一个新值
+
+java.lang.reflect.Array
+
+- static Object get(Object array, int index), static xxx getXxx(Object array, int index)
+（xxx是一种基本类型）这些方法将返回存储在给定数组中给定索引位置上的值
+- static void set(Object array, int index, Object newValue), static setXxx(Object array, int index, xxx newValue)
+（xxx是一种基本类型）这些方法将一个新值存储到给定数组中的给定位置上
+- static int getLength(Object array) 返回给定数组的长度
+- static Object newInstance(Class componentType, int length), static Object newInstance(Class componentType, int[] lengths)
+返回一个有给定类型、给定大小的新数组
+
+
