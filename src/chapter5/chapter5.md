@@ -284,3 +284,8 @@ java.lang.reflect.Method
 
 - public Object invoke(Object implicitParameter, Object explicitParameters)
   调用这个对象描述的方法，传入给定参数，并返回方法的返回值；对于静态方法，传入null作为隐式参数；使用包装器传递基本类型值；基本类型的返回值必须是未包装的
+
+## 继承设计技巧
+
+- 将公共操作与字段放在超类
+- 不要使用受保护字段
