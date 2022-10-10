@@ -59,3 +59,13 @@ java.awt.Toolkit
 无须指定lambda表达式的返回类型
 
 **只有**一个抽象方法的接口是函数式接口，有些方法需要这种接口作为参数，可以提供一个lambda表达式处理
+
+只有当lambda表达式的体只调用一个方法而不做其他操作时，才能把lambda表达式重写为**方法引用**
+
+用::运算符分隔方法名与对象或类名：
+
+- object::instanceMethod
+- Class::instanceMethod
+- Class::staticMethod
+
+包含对象的方法引用与等价的lambda表达式还有细微的差别
