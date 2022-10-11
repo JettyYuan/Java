@@ -69,3 +69,5 @@ java.awt.Toolkit
 - Class::staticMethod
 
 包含对象的方法引用与等价的lambda表达式还有细微的差别
+
+除了方法引用之外，还可以使用构造器引用，也可以为数组类型建立构造器引用
